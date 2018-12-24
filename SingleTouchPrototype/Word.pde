@@ -37,7 +37,7 @@ class Word {
       mouseXDiff = lastMouseClickX - x;
       mouseYDiff = lastMouseClickY - y;
     }
-    if (intersectsMouse) soundFile.play();  
+    if (intersectsMouse && !soundFile.isPlaying()) soundFile.play();  
   }
   
   public void release() {
