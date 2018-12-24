@@ -37,12 +37,6 @@ void mouseReleased() {
   }
 }
 
-void mouseClicked() { 
-  for (Word word : words) {
-    word.clicked();
-  }
-}
-
 void mousePressed() {
   lastMouseClickX = mouseX;
   lastMouseClickY = mouseY;

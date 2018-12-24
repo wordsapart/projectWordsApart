@@ -31,11 +31,13 @@ class Word {
   }
   
   public void pressed() {
-    if (intersectsMouse() && !isDragged) {
+    boolean intersectsMouse = intersectsMouse();
+    if (intersectsMouse && !isDragged) {
       isDragged = true;
       mouseXDiff = lastMouseClickX - x;
       mouseYDiff = lastMouseClickY - y;
     }
+    if (intersectsMouse) soundFile.play();  
   }
   
   public void release() {
@@ -45,9 +47,5 @@ class Word {
   public boolean intersectsMouse() {
     return mouseX >= x && mouseX <= (x + textWidth(text)) 
     && mouseY >= y - size && mouseY <= (y);
-  }
-  
-  public void clicked() {
-    if (intersectsMouse()) soundFile.play();  
   }
 }
