@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>WordsApart</title>
+    <meta name="description" content="A web-based implementation of WordsApart">
+    <meta name="author" content="Andrius Druzinis-Vitkus">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+  <script src="https://unpkg.com/interactjs@1.3/dist/interact.min.js"></script>
+</head>
+<script>
+interact('.draggable')
+  .draggable({
+    // enable inertial throwing
+    inertia: true,
+    // keep the element within the area of it's parent
+    // restrict: {
+    //   restriction: "parent",
+    //   endOnly: true,
+    //   elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+    // },
+    // enable autoScroll
+    // autoScroll: true,
+
+    onstart: playSound,
+
+    // call this function on every dragmove event
+    onmove: dragMoveListener,
+    // call this function on every dragend event
+    // onend: function (event) {
+    //   var textEl = event.target.querySelector('p');
+
+    //   textEl && (textEl.textContent =
+    //     'moved a distance of '
+    //     + (Math.sqrt(Math.pow(event.pageX - event.x0, 2) +
+    //                  Math.pow(event.pageY - event.y0, 2) | 0))
+    //         .toFixed(2) + 'px');
+    // }
+  })
+//   .on('tap', function (event) {
+//     // event.currentTarget.classList.toggle('switch-bg');
+//     console.log('click')
+//     event.preventDefault();
+//   });
+  .on('tap', playSound)
+
+  function playSound(event) {
+      var soundFile = event.target.getAttribute('data-sound');
+      if (!soundFile) soundFile = event.target.parentElement.getAttribute('data-sound');
+      console.debug(soundFile)
+      new Audio(soundFile).play();
+  }
+
+  function dragMoveListener (event) {
+    var target = event.target,
+        // keep the dragged position in the data-x/data-y attributes
+        x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+        y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+    // translate the element
+    target.style.webkitTransform =
+    target.style.transform =
+      'translate(' + x + 'px, ' + y + 'px)';
+
+    // update the posiion attributes
+    target.setAttribute('data-x', x);
+    target.setAttribute('data-y', y);
+  }
+
+  // this is used later in the resizing and gesture demos
+  window.dragMoveListener = dragMoveListener;
+  </script>
+  <style>
+  
+
+#drag-1, #drag-2 {
+  /* width: 100px;  */
+  /* height: 100px; */
+  /* min-height: 1em; */
+  /* margin: 1px; */
+  display: inline-block;
+  background-color: transparent;
+  color: gray;
+  /* border-radius: 0.75em; */
+  padding: 2px;
+  margin: 0;
+  user-select: none;
+  -webkit-transform: translate(0px, 0px);
+          transform: translate(0px, 0px);
+
+    position:fixed; 
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 1000px;
+    overflow-y: hidden;
+}
+</style>
+<body>
+    <div id="drag-1" class="draggable" style="top:200px; left: 300px" data-sound="blah.wav">
+        <p>Words</p>
+    </div>
+    <div id="drag-2" class="draggable" style="top:400px; left: 200px" data-sound="blah.wav">
+        <p>Apart</p>
+    </div>
+      
+      
+</body>
+</html>
