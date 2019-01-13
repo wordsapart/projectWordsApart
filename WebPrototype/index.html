@@ -24,7 +24,7 @@ interact('.draggable')
     // enable autoScroll
     // autoScroll: true,
 
-    onstart: playSound,
+    // onstart: playSound,
 
     // call this function on every dragmove event
     onmove: dragMoveListener,
@@ -44,7 +44,7 @@ interact('.draggable')
 //     console.log('click')
 //     event.preventDefault();
 //   });
-  .on('tap', playSound)
+  .on('down', playSound)
 
   function playSound(event) {
       var soundFile = event.target.getAttribute('data-sound');
@@ -109,10 +109,10 @@ body {
 }
 </style>
 <body>
-    <div id="drag-1" class="draggable" style="top:200px; left: 300px" data-sound="blah.wav">
+    <div id="drag-1" class="draggable" style="top:200px; left: 300px" data-sound="labasvyrai.wav">
         <p>Words</p>
     </div>
-    <div id="drag-2" class="draggable" style="top:400px; left: 200px" data-sound="blah.wav">
+    <div id="drag-2" class="draggable" style="top:400px; left: 200px" data-sound="labasvyrai.wav">
         <p>Apart</p>
     </div>
       
