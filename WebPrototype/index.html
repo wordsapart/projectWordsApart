@@ -41,7 +41,7 @@ interact('.draggable')
   }
   </script>
   <style>
-#drag-1, #drag-2 {
+.draggable {
   display: inline-block;
   background-color: transparent;
   color: gray;
@@ -70,15 +70,17 @@ body {
 }
 </style>
 <body>
-    <div id="drag-1" class="draggable" style="top:200px; left: 300px" data-sound="labasvyrai.wav">
+    <div class="draggable" style="top:200px; left: 300px" data-sound="labasvyrai.wav">
         <p>Words</p>
     </div>
-    <div id="drag-2" class="draggable" style="top:400px; left: 200px" data-sound="blah.wav">
+    <div class="draggable" style="top:400px; left: 200px" data-sound="blah.wav">
         <p>Apart</p>
     </div>
 </body>
 <script>
-document.querySelectorAll('.draggable').forEach(el => el.addEventListener("mousedown", playSound))
-document.querySelectorAll('.draggable').forEach(el => el.addEventListener("touchstart", playSound))
+document.querySelectorAll('.draggable').forEach(el => {
+    el.addEventListener("mousedown", playSound, false)
+    el.addEventListener("touchstart", playSound, false)
+})
 </script>
 </html>
