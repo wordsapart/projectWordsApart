@@ -21,6 +21,7 @@ void setup() {
 }
 
 void draw() {
+  background(0, 49, 83);
   for (Word word : words) {
     word.draw();  
   }
