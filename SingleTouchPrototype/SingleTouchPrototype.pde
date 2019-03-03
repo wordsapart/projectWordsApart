@@ -5,7 +5,7 @@ int lastMouseClickX, lastMouseClickY;
 Word[] words;
 
 void setup() {
-  pixelDensity(displayDensity());
+  //pixelDensity(displayDensity()); // Not supported by the Android runner
   //noCursor();
   size(400, 400);
   
