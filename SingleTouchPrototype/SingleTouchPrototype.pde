@@ -4,8 +4,8 @@ int lastMouseClickX, lastMouseClickY;
 
 Word[] words;
 
-float [][] Buffer1;
-float [][] Buffer2;
+float [] Buffer1;
+float [] Buffer2;
 
 // Ripple settings
 final float flow = 20;
@@ -16,13 +16,13 @@ final int dropsize = 5;
 void setup() {
   //pixelDensity(displayDensity()); // Not supported by the Android runner
   //noCursor();
-  size(1200, 1920);
+  size(1200, 1920,P3D);
   
   // Text color: white, full opacity
   fill(255, 255, 255, 255);
   
-  Buffer1 = new float[width][height];
-  Buffer2 = new float[width][height];
+  Buffer1 = new float[width * height];
+  Buffer2 = new float[width * height];
   
   // Words. Arguments: text, x, y, text size, sound file. 
   words = new Word[] {
@@ -41,22 +41,33 @@ void draw() {
 
 void ripple() {
   loadPixels();
-  for (int x = 1; x < width - 1; x++) {
-    for (int y = 1; y < height - 1; y++) {
-      Buffer2[x][y] =(
-        Buffer1[x - 1][y] +
-        Buffer1[x + 1][y] +
-        Buffer1[x][y + 1] +
-        Buffer1[x][y - 1]) / 2 - Buffer2[x][y];
-
-      Buffer2[x][y] *= dampening; //dampening(flow);
-
-      int index = x + y * width;
-      pixels[index] = color(Buffer1[x][y]*100 + background);
-    }
+  for (int i = width; i < width * height - width; i++) {
+    Buffer2[i] = (
+      Buffer1[i - width] + 
+      Buffer1[i + width] + 
+      Buffer1[i - 1] + 
+      Buffer1[i + 1]
+    ) / 2 - Buffer2[i];
+    
+    Buffer2[i] *= dampening;
+    pixels[i] = color(Buffer1[i]*100 + background);
   }
+  //for (int x = 1; x < width - 1; x++) {
+  //  for (int y = 1; y < height - 1; y++) {
+  //    Buffer2[x][y] =(
+  //      Buffer1[x - 1][y] +
+  //      Buffer1[x + 1][y] +
+  //      Buffer1[x][y + 1] +
+  //      Buffer1[x][y - 1]) / 2 - Buffer2[x][y];
 
-  float[][] temp = Buffer2;
+  //    Buffer2[x][y] *= dampening; //dampening(flow);
+
+  //    int index = x + y * width;
+  //    pixels[index] = color(Buffer1[x][y]*100 + background);
+  //  }
+  //}
+
+  float[] temp = Buffer2;
   Buffer2 = Buffer1;
   Buffer1 = temp;
 
@@ -64,7 +75,7 @@ void ripple() {
 }
 
 void mouseDragged() {
-  Buffer1[mouseX][mouseY] = dropsize;
+  Buffer1[mouseX + mouseY * width] = dropsize;
   for (Word word : words) {
     word.drag(); 
   }
@@ -77,7 +88,7 @@ void mouseReleased() {
 }
 
 void mousePressed() {
-  Buffer1[mouseX][mouseY] = 40*dropsize;
+  Buffer1[mouseX + mouseY * width] = 40*dropsize;
   lastMouseClickX = mouseX;
   lastMouseClickY = mouseY;
   
