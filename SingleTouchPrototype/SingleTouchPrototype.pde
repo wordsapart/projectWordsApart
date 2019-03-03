@@ -12,11 +12,13 @@ void setup() {
   // Text color: white, full opacity
   fill(255, 255, 255, 255);
   
+  PFont serif48 = loadFont("Serif-48.vlw");
+  
   // Words. Arguments: text, x, y, text size, sound file. 
   words = new Word[] {
-    new Word("rūkas", width/2, height/2, 48, new SoundFile(this, "blah.wav")), 
-    new Word("plūduriuodamas", width/2, height/2-200, 48, new SoundFile(this, "blah.wav")), 
-    new Word("stovi", width/2, height/2+200, 48, new SoundFile(this, "blah.wav"))
+    new Word("rūkas", width/2, height/2, 48, new SoundFile(this, "blah.wav"), serif48), 
+    new Word("plūduriuodamas", width/2, height/2-200, 48, new SoundFile(this, "blah.wav"), serif48), 
+    new Word("stovi", width/2, height/2+200, 48, new SoundFile(this, "blah.wav"), serif48)
   };
 }
 

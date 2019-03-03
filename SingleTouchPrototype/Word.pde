@@ -4,16 +4,19 @@ class Word {
   final String text;
   final int width, height;
   final SoundFile soundFile;
+  final PFont font;
   int x, y;
   float size; 
   boolean isDragged;
   int mouseXDiff, mouseYDiff;
   
-  public Word(String text, int x, int y, float size, SoundFile soundFile) {
+  public Word(String text, int x, int y, float size, SoundFile soundFile, PFont font) {
     this.text = text;
     this.x = x;
     this.y = y;
     this.size = size;
+    this.font = font;
+    textFont(font);
     textSize(size);
     this.height =  (int)textAscent(); //(int)size;
     this.width = (int)textWidth(text);
@@ -21,7 +24,8 @@ class Word {
   }
   
   public void draw() {
-    textSize(this.size);
+    textSize(size);
+    textFont(font);
     text(text, x, y);  
   }
   
