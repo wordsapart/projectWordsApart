@@ -21,7 +21,6 @@ class Word {
   }
   
   public void draw() {
-    fill(0);
     textSize(this.size);
     text(text, x, y);  
   }
