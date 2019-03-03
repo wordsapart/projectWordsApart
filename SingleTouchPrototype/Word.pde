@@ -2,7 +2,7 @@ import processing.sound.*;
 
 class Word {
   final String text;
-  final int width, height;
+  final int _width, _height;
   final SoundFile soundFile;
   final PFont font;
   int x, y;
@@ -18,8 +18,8 @@ class Word {
     this.font = font;
     textFont(font);
     textSize(size);
-    this.height =  (int)textAscent(); //(int)size;
-    this.width = (int)textWidth(text);
+    this._height =  (int)textAscent(); //(int)size;
+    this._width = (int)textWidth(text);
     this.soundFile = soundFile;
   }
   
@@ -31,9 +31,15 @@ class Word {
   
   public void drag() {
     if (isDragged) {
-      x = mouseX - mouseXDiff;
-      y = mouseY - mouseYDiff;
+      x = clamp(mouseX - mouseXDiff, 0, width - _width);
+      y = clamp(mouseY - mouseYDiff, _height, height);
     }
+  }
+  
+  private int clamp(int value, int min, int max) {
+    if (value < min) return min;
+    if (value > max) return max;
+    return value;
   }
   
   public void pressed() {
@@ -53,7 +59,7 @@ class Word {
   }
   
   public boolean intersectsMouse() {
-    return mouseX >= x && mouseX <= (x + width) 
-    && mouseY >= (y - height) && mouseY <= y;
+    return mouseX >= x && mouseX <= (x + _width) 
+    && mouseY >= (y - _height) && mouseY <= y;
   }
 }
