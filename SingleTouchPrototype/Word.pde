@@ -1,13 +1,12 @@
 import processing.sound.*;
 
-
 class Word {
-  String text;
+  final String text;
+  final int width, height;
+  final SoundFile soundFile;
   int x, y;
   float size; 
-  final int width, height;
   boolean isDragged;
-  SoundFile soundFile;
   int mouseXDiff, mouseYDiff;
   
   public Word(String text, int x, int y, float size, SoundFile soundFile) {
@@ -35,13 +34,15 @@ class Word {
   }
   
   public void pressed() {
-    boolean intersectsMouse = intersectsMouse();
-    if (intersectsMouse && !isDragged) {
-      isDragged = true;
-      mouseXDiff = lastMouseClickX - x;
-      mouseYDiff = lastMouseClickY - y;
-    }
-    if (intersectsMouse && !soundFile.isPlaying()) soundFile.play();  
+    if (intersectsMouse()) {
+      if (!isDragged) {
+        isDragged = true;
+        mouseXDiff = lastMouseClickX - x;
+        mouseYDiff = lastMouseClickY - y;
+      }
+      
+      if (!soundFile.isPlaying()) soundFile.play(); 
+    }  
   }
   
   public void release() {
@@ -50,6 +51,6 @@ class Word {
   
   public boolean intersectsMouse() {
     return mouseX >= x && mouseX <= (x + width) 
-    && mouseY >= y - height && mouseY <= (y);
+    && mouseY >= (y - height) && mouseY <= y;
   }
 }
