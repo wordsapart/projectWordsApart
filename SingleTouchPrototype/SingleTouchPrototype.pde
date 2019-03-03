@@ -16,7 +16,7 @@ final int dropsize = 5;
 void setup() {
   //pixelDensity(displayDensity()); // Not supported by the Android runner
   //noCursor();
-  size(400, 400);
+  size(1200, 1920);
   
   // Text color: white, full opacity
   fill(255, 255, 255, 255);
@@ -26,9 +26,9 @@ void setup() {
   
   // Words. Arguments: text, x, y, text size, sound file. 
   words = new Word[] {
-    new Word("blah", 10, 20, 12, new SoundFile(this, "blah.wav")), 
-    new Word("blah", 30, 50, 16, new SoundFile(this, "blah.wav")), 
-    new Word("blah", 60, 100, 20, new SoundFile(this, "blah.wav"))
+    new Word("rūkas", width/2, height/2, 48, new SoundFile(this, "blah.wav")), 
+    new Word("plūduriuodamas", width/2, height/2-200, 48, new SoundFile(this, "blah.wav")), 
+    new Word("stovi", width/2, height/2+200, 48, new SoundFile(this, "blah.wav"))
   };
 }
 
