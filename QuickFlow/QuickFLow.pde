@@ -7,7 +7,7 @@ float [][] Buffer2;
 
 //settings!
 int background = 20;
-boolean rain = true;
+boolean rain = false;
 int rainvalue = 7;
 int dropsize = 5;
 float flow = 20;
@@ -40,8 +40,8 @@ void setup() {
 
 
 void draw() {
-  if (weirddot == true)Buffer1[width/2][height/2] = 20*dropsize;
-  if (screensaver == true)screensaver();
+  //if (weirddot == true)Buffer1[width/2][height/2] = 20*dropsize;
+  //if (screensaver == true)screensaver();
   ripple();
 }
 
@@ -113,7 +113,7 @@ void console() {
 void mouseDragged() {
   if (mouseInBound()) {
     Buffer1[mouseX][mouseY] = dropsize;
-    console();
+    //console();
   }
 }
 
@@ -121,7 +121,7 @@ void mousePressed() {
   if (mouseInBound()) {
     Buffer1[mouseX][mouseY] = 40*dropsize;
     if (sound == true)dropsound.play();
-    console();
+    //console();
   }
 }
 
@@ -136,14 +136,14 @@ void keyPressed() {
       Buffer2[x][y] = Buffer1[x][y] = 0;
     }
   }
-  println("Canvas reset!");
+  //println("Canvas reset!");
 }
 
-void mouseWheel(MouseEvent event) {
-  if (event.getCount() == -1 && flow < 50)flow++;
-  if (event.getCount() == 1 && flow > -10)flow--;
-  console();
-}
+//void mouseWheel(MouseEvent event) {
+//  if (event.getCount() == -1 && flow < 50)flow++;
+//  if (event.getCount() == 1 && flow > -10)flow--;
+//  console();
+//}
 
 float dampening(float flow) {
   return (1 / (1 + pow((float)Math.E, -(flow/5))));
