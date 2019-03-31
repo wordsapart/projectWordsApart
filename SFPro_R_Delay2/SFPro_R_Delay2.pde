@@ -4,10 +4,12 @@ int lastMouseClickX, lastMouseClickY;
 int margin = 10;
 int idleSecondsForScreenshot = 2;
 String screenshotPath = detectSdCardPath();
+boolean enableEnergySaving = true;
 
 boolean screenshotSaved = true; // do not make a screenshot on loading the app
 long lastInteraction = millis();
 long idleMillis = idleSecondsForScreenshot * 1000;
+boolean idle;
 
 Word[] words;
 
@@ -84,6 +86,8 @@ void setup() {
 }
 
 void draw() {
+  if (enableEnergySaving && idle) return;
+  
   background(0, 49, 83);
   
   for (int i = 0, n = words.length; i < n; i++) {
@@ -99,10 +103,12 @@ void mouseReleased() {
   for (int i = 0, n = words.length; i < n; i++) {
     words[i].dragStopped();
   }
+  idle = true;
 }
 
 void mouseDragged() {
   updateLastInteraction();
+  idle = false;
 }
 
 void mousePressed() {
@@ -113,6 +119,7 @@ void mousePressed() {
   for (int i = 0, n = words.length; i < n; i++) {
     words[i].pressed();
   }
+  idle = false;
 }
 
 private void updateLastInteraction() {
