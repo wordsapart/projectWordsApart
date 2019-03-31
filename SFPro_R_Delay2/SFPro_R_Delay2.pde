@@ -2,6 +2,12 @@ import processing.sound.*;
 
 int lastMouseClickX, lastMouseClickY;
 int margin = 10;
+int idleSecondsForScreenshot = 2;
+String screenshotPath = detectSdCardPath();
+
+boolean screenshotSaved = true; // do not make a screenshot on loading the app
+long lastInteraction = millis();
+long idleMillis = idleSecondsForScreenshot * 1000;
 
 Word[] words;
 
@@ -83,6 +89,10 @@ void draw() {
   for (int i = 0, n = words.length; i < n; i++) {
     words[i].draw();
   }
+  if (!screenshotSaved && (millis() - lastInteraction) > idleMillis) {
+    screenshotSaved = true;
+    saveScreenshot();
+  }
 }
 
 void mouseReleased() {
@@ -91,11 +101,51 @@ void mouseReleased() {
   }
 }
 
+void mouseDragged() {
+  updateLastInteraction();
+}
+
 void mousePressed() {
+  updateLastInteraction();
   lastMouseClickX = mouseX;
   lastMouseClickY = mouseY;
   
   for (int i = 0, n = words.length; i < n; i++) {
     words[i].pressed();
   }
+}
+
+private void updateLastInteraction() {
+  lastInteraction = millis();
+  screenshotSaved = false;
+}
+
+private void saveScreenshot() {
+  String name = year() + '-' + String.format("%02d", month()) + '-' + String.format("%02d", day()) + ' ' + hour() + ':' + minute() + ':' + second();
+  saveFrame(screenshotPath + name + ".png");
+}
+
+// Try to detect the SD card path by checking a number of standard paths
+private String detectSdCardPath() {
+  String[] candidates = new String[] {
+    System.getenv("EXTERNAL_STORAGE"),
+    System.getenv("SECONDARY_STORAGE"),
+    "/storage/sdcard0",
+    "/storage/extSdCard", 
+    "/mnt/sdcard",
+    "/mnt/external_sd"
+  };
+  for (String candidate : candidates) {
+    try {
+      if (new File(candidate).exists()) {
+        if (!candidate.endsWith("/")) {
+          candidate = candidate + '/';
+        }
+        return candidate;
+      }
+    } catch (Exception e) {
+      // path invalid
+    }
+  }
+  return "";
 }
