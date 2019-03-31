@@ -4,6 +4,7 @@ int lastMouseClickX, lastMouseClickY;
 int margin = 5;
 
 Word[] words;
+ArrayList<Word> draggedWords = new ArrayList<Word>();
 
 void setup() {
   //pixelDensity(displayDensity()); // Not supported by the Android runner
@@ -80,28 +81,30 @@ void setup() {
 void draw() {
   background(0, 49, 83);
   //background(255, 255, 255);
-  for (Word word : words) {
-    word.draw();  
+  
+  for (int i = 0, n = words.length; i < n; i++) {
+    words[i].draw();
   }
 }
 
 void mouseDragged() {
-  for (Word word : words) {
-    word.drag(); 
+  for (int i = 0, n = draggedWords.size(); i < n; i++) {
+    draggedWords.get(i).drag();
   }
 }
 
 void mouseReleased() {
-  for (Word word : words) {
-    word.release();
-  }
+  draggedWords.clear();
 }
 
 void mousePressed() {
   lastMouseClickX = mouseX;
   lastMouseClickY = mouseY;
   
-  for (Word word : words) {
-    word.pressed();
+  for (int i = 0, n = words.length; i < n; i++) {
+    Word word = words[i];
+    if (word.pressed()) {
+      draggedWords.add(word);
+    }
   }
 }
