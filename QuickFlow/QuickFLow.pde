@@ -7,7 +7,7 @@ float [][] Buffer2;
 
 //settings!
 int background = 20;
-boolean rain = false;
+boolean rain = true;
 int rainvalue = 7;
 int dropsize = 5;
 float flow = 20;
