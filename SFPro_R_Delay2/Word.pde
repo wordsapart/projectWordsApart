@@ -5,17 +5,19 @@ class Word {
   final int _width, _height;
   final SoundFile soundFile;
   final PFont font;
+  final int margin;
   int x, y;
   float size; 
   boolean isDragged;
   int mouseXDiff, mouseYDiff;
   
-  public Word(String text, int x, int y, float size, SoundFile soundFile, PFont font) {
+  public Word(String text, int x, int y, float size, SoundFile soundFile, PFont font, int margin) {
     this.text = text;
     this.x = x;
     this.y = y;
     this.size = size;
     this.font = font;
+    this.margin = margin;
     textFont(font);
     textSize(size);
     this._height =  (int)textAscent(); //(int)size;
@@ -59,7 +61,7 @@ class Word {
   }
   
   public boolean intersectsMouse() {
-    return mouseX >= x && mouseX <= (x + _width) 
-    && mouseY >= (y - _height) && mouseY <= y;
+    return mouseX >= (x - margin) && mouseX <= (x + _width + margin) 
+    && mouseY >= (y - _height - margin) && mouseY <= (y + margin);
   }
 }
