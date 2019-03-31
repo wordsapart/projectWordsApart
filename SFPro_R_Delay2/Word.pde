@@ -8,6 +8,7 @@ class Word {
   final int margin;
   int x, y;
   final float size; 
+  boolean isDragged;
   int mouseXDiff, mouseYDiff;
   
   public Word(String text, int x, int y, float size, SoundFile soundFile, PFont font, int margin) {
@@ -25,12 +26,13 @@ class Word {
   }
   
   public void draw() {
+    if (isDragged) updateLocation();
     textSize(size);
     textFont(font);
     text(text, x, y);  
   }
   
-  public void drag() {
+  private void updateLocation() {
     x = clamp(mouseX - mouseXDiff, 0, width - _width);
     y = clamp(mouseY - mouseYDiff, _height, height);
   }
@@ -41,12 +43,17 @@ class Word {
     return value;
   }
   
+  public void dragStopped() {
+    this.isDragged = false;  
+  }
+  
   public boolean pressed() {
     if (intersectsMouse()) {
       mouseXDiff = lastMouseClickX - x;
       mouseYDiff = lastMouseClickY - y;
       
       if (!soundFile.isPlaying()) soundFile.play(); 
+      isDragged = true;
       return true;
     } 
     return false;

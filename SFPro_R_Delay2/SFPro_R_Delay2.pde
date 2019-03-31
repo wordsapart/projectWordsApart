@@ -1,10 +1,9 @@
 import processing.sound.*;
 
 int lastMouseClickX, lastMouseClickY;
-int margin = 5;
+int margin = 10;
 
 Word[] words;
-ArrayList<Word> draggedWords = new ArrayList<Word>();
 
 void setup() {
   //pixelDensity(displayDensity()); // Not supported by the Android runner
@@ -80,21 +79,16 @@ void setup() {
 
 void draw() {
   background(0, 49, 83);
-  //background(255, 255, 255);
   
   for (int i = 0, n = words.length; i < n; i++) {
     words[i].draw();
   }
 }
 
-void mouseDragged() {
-  for (int i = 0, n = draggedWords.size(); i < n; i++) {
-    draggedWords.get(i).drag();
-  }
-}
-
 void mouseReleased() {
-  draggedWords.clear();
+  for (int i = 0, n = words.length; i < n; i++) {
+    words[i].dragStopped();
+  }
 }
 
 void mousePressed() {
@@ -102,9 +96,6 @@ void mousePressed() {
   lastMouseClickY = mouseY;
   
   for (int i = 0, n = words.length; i < n; i++) {
-    Word word = words[i];
-    if (word.pressed()) {
-      draggedWords.add(word);
-    }
+    words[i].pressed();
   }
 }
