@@ -129,7 +129,8 @@ private void updateLastInteraction() {
 }
 
 private void saveScreenshot() {
-  String name = year() + '-' + String.format("%02d", month()) + '-' + String.format("%02d", day()) + ' ' + hour() + ':' + minute() + ':' + second();
+  String name = year() + "-" + String.format("%02d", month()) + "-" + String.format("%02d", day()) + " " + 
+  String.format("%02d", hour()) + "." + String.format("%02d", minute()) + "." + String.format("%02d", second());
   saveFrame(screenshotPath + name + ".png");
 }
 
