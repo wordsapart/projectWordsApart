@@ -4,7 +4,7 @@ import android.os.Environment;
 int lastMouseClickX, lastMouseClickY;
 int margin = 10;
 int idleSecondsForScreenshot = 2;
-String screenshotPath;
+File screenshotLocation;
 boolean enableEnergySaving = true;
 
 boolean screenshotSaved = true; // do not make a screenshot on loading the app
@@ -84,51 +84,10 @@ void setup() {
     //new Word("plaukia", 540, 1660, 36, new SoundFile(this, "blah.wav"), MyFont, margin),
     //new Word("rūkas", 540, 1720, 36, new SoundFile(this, "blah.wav"), MyFont, margin),
   };
-  screenshotPath = detectSdCardPath();
+  screenshotLocation = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 }
 
-boolean initialScreenshot = true;
 void draw() {
-  if (initialScreenshot) {
-    initialScreenshot = false;
-    File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-    String file = new File(path, "test.png").getAbsolutePath();
-    try {
-      println("trying to write to " + file);
-      println("success");
-      saveFrame(file);
-    } catch (Exception e) {
-      println("fail");
-    }
-    path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-    file = new File(path, "test.png").getAbsolutePath();
-    try {
-      println("trying to write to " + file);
-      println("success");
-      saveFrame(file);
-    } catch (Exception e) {
-      println("fail");
-    }
-    path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-    file = new File(path, "test.png").getAbsolutePath();
-    try {
-      println("trying to write to " + file);
-      println("success");
-      saveFrame(file);
-    } catch (Exception e) {
-      println("fail");
-    }
-    path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-    file = new File(path, "test.png").getAbsolutePath();
-    try {
-      println("trying to write to " + file);
-      println("success");
-      saveFrame(file);
-    } catch (Exception e) {
-      println("fail");
-    }
-    
-  }
   if (!screenshotSaved && (millis() - lastInteraction) > idleMillis) {
     screenshotSaved = true;
     saveScreenshot();
@@ -174,41 +133,5 @@ private void updateLastInteraction() {
 private void saveScreenshot() {
   String name = year() + "-" + String.format("%02d", month()) + "-" + String.format("%02d", day()) + " " + 
   String.format("%02d", hour()) + "." + String.format("%02d", minute()) + "." + String.format("%02d", second());
-  saveFrame(screenshotPath + name + ".png");
-}
-
-// Try to detect the SD card path by checking a number of standard paths
-private String detectSdCardPath() {
-  String[] candidates = new String[] {
-    android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_PICTURES).getAbsolutePath(),
-    System.getenv("EXTERNAL_STORAGE"),
-    System.getenv("SECONDARY_STORAGE"),
-    "/storage/sdcard0",
-    "/storage/extSdCard", 
-    "/mnt/sdcard",
-    "/mnt/external_sd"
-  };
-  println("Looking for the SD card directory");
-  for (String candidate : candidates) {
-    if (candidate == null) continue;
-    try {
-      println("checking path [" + candidate + "]");
-      File file = new File(candidate);
-      boolean exists = file.exists();
-      boolean writable = file.canWrite();
-      println("\texists: " + exists + ", writable: " + writable);
-      if (exists && writable) {
-        if (!candidate.endsWith("/")) {
-          candidate = candidate + '/';
-        }
-        println("Using screenshot path: " + candidate);
-        return candidate;
-      }
-    } catch (Exception e) {
-      println("path check failed");
-      // path invalid
-    }
-  }
-  println("Unable to find usable screenshot path");
-  return "";
+  saveFrame(new File(screenshotLocation, name + ".png").getAbsolutePath());
 }
