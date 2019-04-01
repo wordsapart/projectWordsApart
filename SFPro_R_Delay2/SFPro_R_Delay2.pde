@@ -86,16 +86,17 @@ void setup() {
 }
 
 void draw() {
+  if (!screenshotSaved && (millis() - lastInteraction) > idleMillis) {
+    screenshotSaved = true;
+    saveScreenshot();
+  }
+  
   if (enableEnergySaving && idle) return;
   
   background(0, 49, 83);
   
   for (int i = 0, n = words.length; i < n; i++) {
     words[i].draw();
-  }
-  if (!screenshotSaved && (millis() - lastInteraction) > idleMillis) {
-    screenshotSaved = true;
-    saveScreenshot();
   }
 }
 
