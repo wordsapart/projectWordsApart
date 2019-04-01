@@ -143,6 +143,7 @@ private void saveScreenshot() {
 // Try to detect the SD card path by checking a number of standard paths
 private String detectSdCardPath() {
   String[] candidates = new String[] {
+    android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_PICTURES).getAbsolutePath(),
     System.getenv("EXTERNAL_STORAGE"),
     System.getenv("SECONDARY_STORAGE"),
     "/storage/sdcard0",
@@ -152,16 +153,18 @@ private String detectSdCardPath() {
   };
   println("Looking for the SD card directory");
   for (String candidate : candidates) {
+    if (candidate == null) continue;
     try {
       println("checking path [" + candidate + "]");
       File file = new File(candidate);
       boolean exists = file.exists();
       boolean writable = file.canWrite();
-      println("\texists: " + exists + ", writable" + writable);
+      println("\texists: " + exists + ", writable: " + writable);
       if (exists && writable) {
         if (!candidate.endsWith("/")) {
           candidate = candidate + '/';
         }
+        println("Using screenshot path: " + candidate);
         return candidate;
       }
     } catch (Exception e) {
@@ -169,5 +172,6 @@ private String detectSdCardPath() {
       // path invalid
     }
   }
+  println("Unable to find usable screenshot path");
   return "";
 }
