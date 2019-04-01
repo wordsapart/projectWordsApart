@@ -1,4 +1,5 @@
 import processing.sound.*;
+import android.os.Environment;
 
 int lastMouseClickX, lastMouseClickY;
 int margin = 10;
@@ -90,7 +91,43 @@ boolean initialScreenshot = true;
 void draw() {
   if (initialScreenshot) {
     initialScreenshot = false;
-    saveScreenshot();
+    File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+    String file = new File(path, "test.png").getAbsolutePath();
+    try {
+      println("trying to write to " + file);
+      println("success");
+      saveFrame(file);
+    } catch (Exception e) {
+      println("fail");
+    }
+    path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+    file = new File(path, "test.png").getAbsolutePath();
+    try {
+      println("trying to write to " + file);
+      println("success");
+      saveFrame(file);
+    } catch (Exception e) {
+      println("fail");
+    }
+    path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+    file = new File(path, "test.png").getAbsolutePath();
+    try {
+      println("trying to write to " + file);
+      println("success");
+      saveFrame(file);
+    } catch (Exception e) {
+      println("fail");
+    }
+    path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+    file = new File(path, "test.png").getAbsolutePath();
+    try {
+      println("trying to write to " + file);
+      println("success");
+      saveFrame(file);
+    } catch (Exception e) {
+      println("fail");
+    }
+    
   }
   if (!screenshotSaved && (millis() - lastInteraction) > idleMillis) {
     screenshotSaved = true;
