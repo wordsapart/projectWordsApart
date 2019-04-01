@@ -3,7 +3,7 @@ import processing.sound.*;
 int lastMouseClickX, lastMouseClickY;
 int margin = 10;
 int idleSecondsForScreenshot = 2;
-String screenshotPath = detectSdCardPath();
+String screenshotPath;
 boolean enableEnergySaving = true;
 
 boolean screenshotSaved = true; // do not make a screenshot on loading the app
@@ -83,9 +83,15 @@ void setup() {
     //new Word("plaukia", 540, 1660, 36, new SoundFile(this, "blah.wav"), MyFont, margin),
     //new Word("rūkas", 540, 1720, 36, new SoundFile(this, "blah.wav"), MyFont, margin),
   };
+  screenshotPath = detectSdCardPath();
 }
 
+boolean initialScreenshot = true;
 void draw() {
+  if (initialScreenshot) {
+    initialScreenshot = false;
+    saveScreenshot();
+  }
   if (!screenshotSaved && (millis() - lastInteraction) > idleMillis) {
     screenshotSaved = true;
     saveScreenshot();
@@ -144,15 +150,22 @@ private String detectSdCardPath() {
     "/mnt/sdcard",
     "/mnt/external_sd"
   };
+  println("Looking for the SD card directory");
   for (String candidate : candidates) {
     try {
-      if (new File(candidate).exists()) {
+      println("checking path [" + candidate + "]");
+      File file = new File(candidate);
+      boolean exists = file.exists();
+      boolean writable = file.canWrite();
+      println("\texists: " + exists + ", writable" + writable);
+      if (exists && writable) {
         if (!candidate.endsWith("/")) {
           candidate = candidate + '/';
         }
         return candidate;
       }
     } catch (Exception e) {
+      println("path check failed");
       // path invalid
     }
   }
